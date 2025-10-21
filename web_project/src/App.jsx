@@ -2,6 +2,10 @@ import { useState } from 'react'
 import Header from './components/Header'
 import Login from './Login'
 import SignUp from './SignUp'
+import PurchasePage from './PurchasePage'
+import About from './About'
+import Features from './Features'
+import ContactUs from './ContactUs'
 import backgroundImage from './assets/backgroundImage.jpg'
 import './App.css'
 
@@ -28,11 +32,27 @@ function App() {
     setCurrentView('login')
   }
 
+  const handleBuyCaneClick = () => {
+    setCurrentView('purchase')
+  }
+
+  const handleAboutClick = () => {
+    setCurrentView('about')
+  }
+
+  const handleFeaturesClick = () => {
+    setCurrentView('features')
+  }
+
+  const handleContactUsClick = () => {
+    setCurrentView('contactus')
+  }
+
   return (
     <>
      {currentView === 'home' && (
        <>
-         <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} />
+         <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
          <section className='Main-section'>
           <img src={backgroundImage} className="Background-image" alt="background" />
           <div className='Main-text'>
@@ -65,6 +85,34 @@ function App() {
          <button onClick={handleBackToHome} className="back-to-home-btn">
            Back to Home
          </button>
+       </div>
+     )}
+     
+     {currentView === 'purchase' && (
+       <div>
+         <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
+         <PurchasePage onBackToHome={handleBackToHome} />
+       </div>
+     )}
+     
+     {currentView === 'about' && (
+       <div>
+         <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
+         <About onBackToHome={handleBackToHome} />
+       </div>
+     )}
+     
+     {currentView === 'features' && (
+       <div>
+         <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
+         <Features onBackToHome={handleBackToHome} />
+       </div>
+     )}
+     
+     {currentView === 'contactus' && (
+       <div>
+         <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
+         <ContactUs />
        </div>
      )}
     </>
