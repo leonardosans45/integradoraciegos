@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './login.css';
 
-function Login({ onGoToSignUp }) {
+function Login({ onGoToSignUp, onGoToForgotPassword }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -42,18 +42,17 @@ function Login({ onGoToSignUp }) {
           </button>
         </form>
         <div className="login-links">
-          <a href="#forgot">Forgot Password?</a>
+          <button 
+            type="button" 
+            onClick={onGoToForgotPassword}
+            className="signup-link-btn"
+          >
+            Forgot Password?
+          </button>
           <button 
             type="button" 
             onClick={onGoToSignUp}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#007bff',
-              textDecoration: 'underline',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
+            className="signup-link-btn"
           >
             Don't have an account? Sign Up
           </button>

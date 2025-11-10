@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Header from './components/Header'
 import Login from './Login'
 import SignUp from './SignUp'
+import ForgotPassword from './ForgotPassword'
 import PurchasePage from './PurchasePage'
 import About from './About'
 import Features from './Features'
@@ -30,6 +31,10 @@ function App() {
 
   const handleGoToLogin = () => {
     setCurrentView('login')
+  }
+
+  const handleGoToForgotPassword = () => {
+    setCurrentView('forgotpassword')
   }
 
   const handleBuyCaneClick = () => {
@@ -72,7 +77,16 @@ function App() {
      
      {currentView === 'login' && (
        <div>
-         <Login onGoToSignUp={handleGoToSignUp} />
+         <Login onGoToSignUp={handleGoToSignUp} onGoToForgotPassword={handleGoToForgotPassword} />
+         <button onClick={handleBackToHome} className="back-to-home-btn">
+           Back to Home
+         </button>
+       </div>
+     )}
+
+     {currentView === 'forgotpassword' && (
+       <div>
+         <ForgotPassword onGoToLogin={handleGoToLogin} />
          <button onClick={handleBackToHome} className="back-to-home-btn">
            Back to Home
          </button>

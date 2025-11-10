@@ -13,7 +13,7 @@ import {
 
 export default function RegisterScreen({ navigation }) {
   const [formData, setFormData] = useState({
-    fullName: '',
+    Name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -27,9 +27,9 @@ export default function RegisterScreen({ navigation }) {
   };
 
   const validateForm = () => {
-    const { fullName, email, password, confirmPassword } = formData;
+    const { Name, email, password, confirmPassword } = formData;
 
-    if (!fullName || !email || !password || !confirmPassword) {
+    if (!Name || !email || !password || !confirmPassword) {
       Alert.alert('Error', 'Por favor, completa todos los campos');
       return false;
     }
@@ -77,9 +77,9 @@ export default function RegisterScreen({ navigation }) {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Nombre completo"
+              placeholder="Nombre"
               value={formData.fullName}
-              onChangeText={(value) => handleInputChange('fullName', value)}
+              onChangeText={(value) => handleInputChange('Name', value)}
               autoCapitalize="words"
               placeholderTextColor="#999"
             />
