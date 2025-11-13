@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,11 +10,14 @@ import HomeScreen from './components/HomeScreen';
 import ForgotPasswordScreen from './components/ForgotPasswordScreen';
 import { TouchableOpacity, Text, Alert } from 'react-native';
 
+
 const Stack = createStackNavigator();
+
+const navigationRef = createNavigationContainerRef();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <StatusBar style="auto" />
       <Stack.Navigator
         initialRouteName="Login"
@@ -39,7 +43,17 @@ headerTitleStyle: {
                 }}
                 onPress={() => Alert.alert('Log Out', 'Are you sure you want to log out?', [
                   { text: 'Cancel', style: 'cancel' },
-                  { text: 'Log Out', onPress: () => navigation.navigate('Login') },
+                  { text: 'Log Out', onPress: () => {
+                    try {
+                      if (navigationRef.isReady()) {
+                        navigationRef.dispatch(StackActions.popToTop());
+                      } else {
+                        console.error('NavigationRef is not ready');
+                      }
+                    } catch (error) {
+                      console.error('Navigation error:', error);
+                    }
+                  }},
                 ])}
               >
                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>Log Out</Text>

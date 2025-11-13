@@ -7,7 +7,6 @@ import {
   Alert,
 } from 'react-native';
 import MapView from 'react-native-maps';
-
 export default function HomeScreen({ navigation }) {
   const handleLogout = () => {
     Alert.alert(
