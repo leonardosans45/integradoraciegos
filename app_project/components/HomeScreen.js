@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import MapView from 'react-native-maps';
 
 export default function HomeScreen({ navigation }) {
   const handleLogout = () => {
@@ -27,21 +28,40 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>¡Bienvenido!</Text>
-        <Text style={styles.subtitle}>Has iniciado sesión exitosamente</Text>
-        
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Panel Principal</Text>
-          <Text style={styles.cardText}>
-            Esta es tu pantalla principal. Aquí puedes agregar el contenido 
-            principal de tu aplicación.
-          </Text>
+      <View style={{ flex: 1 }}>
+        <MapView
+          style={{ flex: 1 }}
+          provider={MapView.PROVIDER_GOOGLE}
+          initialRegion={{
+            latitude: 37.7749,
+            longitude: -122.4194,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+        <View style={styles.deviceInfoOverlay}>
+          <View style={styles.deviceInfoContent}>
+            <View style={styles.deviceStatus}>
+              <Text style={styles.statusConnected}>● Connected</Text>
+              <Text style={styles.batteryLevel}>🔋 85%</Text>
+              <Text style={styles.deviceId}>ID: SC-001</Text>
+            </View>
+            <View style={styles.deviceActions}>
+              <TouchableOpacity style={styles.overlayBtn}>
+                <Text>📍 Find</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.overlayBtn}>
+                <Text>🔔 Alert</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.overlayBtn}>
+                <Text>📊 History</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.overlayBtn, styles.disconnect]}>
+                <Text>🔌 Disconnect</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -113,5 +133,72 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  deviceInfoOverlay: {
+    position: 'absolute',
+    bottom: 60,
+    left: '50%',
+    transform: [{ translateX: -150 }],
+    width: 300,
+    backgroundColor: '#ffffff',
+    padding: 10,
+    borderRadius: 10,
+  },
+  deviceInfoContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+  },
+  deviceStatus: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  statusConnected: {
+    color: '#28a745',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+  },
+  batteryLevel: {
+    color: '#28a745',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+  },
+  deviceId: {
+    color: '#666',
+    fontFamily: 'Courier New',
+    backgroundColor: '#f8f9fa',
+    padding: 4,
+    borderRadius: 6,
+    fontSize: 12,
+  },
+  deviceActions: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+  overlayBtn: {
+    padding: 6,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#f8f9fa',
+    color: '#333',
+    borderRadius: 6,
+    fontSize: 12,
+    fontWeight: '500',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+  },
+  disconnect: {
+    backgroundColor: '#dc3545',
+    color: '#fff',
+    borderColor: '#dc3545',
   },
 });

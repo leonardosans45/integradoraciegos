@@ -32,8 +32,11 @@ function SimpleMap({ onGoHome }) {
         const map = window.L.map(mapRef.current).setView([20.6597, -103.3496], 16);
 
         // Agregar tiles de OpenStreetMap
-        window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors'
+var Stadia_OSMBright = window.L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png', {
+          minZoom: 0,
+          maxZoom: 20,
+          attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          ext: 'png'
         }).addTo(map);
 
         // Agregar marcador
