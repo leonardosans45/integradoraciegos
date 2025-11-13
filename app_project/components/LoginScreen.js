@@ -94,9 +94,27 @@ export default function LoginScreen({ navigation }) {
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <LinearGradient
               colors={['#007bff', '#0056b3']}
+              style={{
+                borderRadius: 5,
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}
+            >
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
+                sing up here
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.registerContainer}>
+          <Text style={styles.registerText}>Don't remember your password? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+            <LinearGradient
+              colors={['#007bff', '#0056b3']}
               style={styles.registerLinkContainer}
             >
-              <Text style={styles.registerLink}>sing up here</Text>
+              <Text style={styles.registerLink}>Click here</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -185,6 +203,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  forgotPasswordLink: {
+    color: '#007AFF',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 10,
   },
   registerLink: {
     color: '#fff',

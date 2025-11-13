@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import LoginScreen from './components/LoginScreen';
 import RegisterScreen from './components/RegisterScreen';
 import HomeScreen from './components/HomeScreen';
+import ForgotPasswordScreen from './components/ForgotPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,14 @@ export default function App() {
           options={{
             title: 'Inicio',
             headerLeft: null, // Previene volver atrás con gesture
+          }}
+        />
+        <Stack.Screen 
+          name="ForgotPassword" 
+          component={ForgotPasswordScreen} 
+          options={{
+            title: 'Forgot Password',
+            headerShown: false,
           }}
         />
       </Stack.Navigator>
