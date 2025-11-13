@@ -3,8 +3,12 @@
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
+                width: 100vw;
                 background-color: #ffffff;
                 color: #000;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
 }
 
 .login-form {
@@ -13,7 +17,7 @@
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 width: 300px;
-                margin-bottom: 200px;
+                margin: 0;
 }
 
 .login-form h2 {
@@ -101,6 +105,55 @@
                 font-size: 14px;
 }
 .signup-link-btn:hover {
-                color: #007bff !important;
-                text-decoration: underline;
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.validation-icon.success {
+  color: #28a745;
+}
+
+.validation-icon.error {
+  color: #dc3545;
+}
+
+.success-message {
+  color: #28a745;
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+}
+
+/* Estilos para errores de validación */
+.error-message {
+                color: #dc3545;
+                font-size: 12px;
+                margin-top: 5px;
+                margin-bottom: 10px;
+                display: block;
+}
+
+.form-group.error input {
+                border-color: #dc3545;
+                box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.form-group.success input {
+                border-color: #28a745;
+                box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.validation-icon {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 14px;
+}
+
+.form-group {
+                position: relative;
 }

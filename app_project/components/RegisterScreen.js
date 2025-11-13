@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import {
   View,
   Text,
@@ -10,59 +12,17 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function RegisterScreen({ navigation }) {
-  const [formData, setFormData] = useState({
-    Name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+  const RegisterSchema = Yup.object().shape({
+    Name: Yup.string().required('Please fill out all fields'),
+    email: Yup.string().email('Please enter a valid email').required('Please fill out all fields'),
+    password: Yup.string().min(6, 'Password must be at least 6 characters long').required('Please fill out all fields'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords do not match')
+      .required('Please fill out all fields'),
   });
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const validateForm = () => {
-    const { Name, email, password, confirmPassword } = formData;
-
-    if (!Name || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Por favor, completa todos los campos');
-      return false;
-    }
-
-    if (!email.includes('@')) {
-      Alert.alert('Error', 'Por favor, introduce un email válido');
-      return false;
-    }
-
-    if (password.length < 6) {
-      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres');
-      return false;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Las contraseñas no coinciden');
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleRegister = () => {
-    if (validateForm()) {
-      // Aquí puedes agregar la lógica de registro real
-      Alert.alert('Éxito', '¡Cuenta creada exitosamente!', [
-        { 
-          text: 'OK', 
-          onPress: () => navigation.navigate('Login')
-        }
-      ]);
-    }
-  };
 
   return (
     <KeyboardAvoidingView 
@@ -74,60 +34,118 @@ export default function RegisterScreen({ navigation }) {
           <Text style={styles.title}>Crear Cuenta</Text>
           <Text style={styles.subtitle}>¡Únete a nosotros!</Text>
 
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Nombre"
-              value={formData.fullName}
-              onChangeText={(value) => handleInputChange('Name', value)}
-              autoCapitalize="words"
-              placeholderTextColor="#999"
-            />
-          </View>
+          <Formik
+            initialValues={{
+              Name: '',
+              email: '',
+              password: '',
+              confirmPassword: '',
+            }}
+            validationSchema={RegisterSchema}
+            onSubmit={(values) => {
+              // Aquí puedes agregar la lógica de registro real
+              Alert.alert('Éxito', '¡Cuenta creada exitosamente!', [
+                { text: 'OK', onPress: () => navigation.navigate('Login') }
+              ]);
+            }}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+              <>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.Name && errors.Name ? styles.inputError : null,
+                    ]}
+                    placeholder="Nombre"
+                    onChangeText={handleChange('Name')}
+                    onBlur={handleBlur('Name')}
+                    value={values.Name}
+                    autoCapitalize="words"
+                    placeholderTextColor="#999"
+                  />
+                  {touched.Name && errors.Name && (
+                    <Text style={{ color: 'red', fontSize: 12 }}>{errors.Name}</Text>
+                  )}
+                </View>
 
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={formData.email}
-              onChangeText={(value) => handleInputChange('email', value)}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              placeholderTextColor="#999"
-            />
-          </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.email && errors.email ? styles.inputError : null,
+                    ]}
+                    placeholder="Email"
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    placeholderTextColor="#999"
+                  />
+                  {touched.email && errors.email && (
+                    <Text style={{ color: 'red', fontSize: 12 }}>{errors.email}</Text>
+                  )}
+                </View>
 
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Contraseña (mín. 6 caracteres)"
-              value={formData.password}
-              onChangeText={(value) => handleInputChange('password', value)}
-              secureTextEntry
-              placeholderTextColor="#999"
-            />
-          </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.password && errors.password ? styles.inputError : null,
+                    ]}
+                    placeholder="Contraseña (mín. 6 caracteres)"
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    secureTextEntry
+                    placeholderTextColor="#999"
+                  />
+                  {touched.password && errors.password && (
+                    <Text style={{ color: 'red', fontSize: 12 }}>{errors.password}</Text>
+                  )}
+                </View>
 
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Confirmar contraseña"
-              value={formData.confirmPassword}
-              onChangeText={(value) => handleInputChange('confirmPassword', value)}
-              secureTextEntry
-              placeholderTextColor="#999"
-            />
-          </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={[
+                      styles.input,
+                      touched.confirmPassword && errors.confirmPassword ? styles.inputError : null,
+                    ]}
+                    placeholder="Confirmar contraseña"
+                    onChangeText={handleChange('confirmPassword')}
+                    onBlur={handleBlur('confirmPassword')}
+                    value={values.confirmPassword}
+                    secureTextEntry
+                    placeholderTextColor="#999"
+                  />
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <Text style={{ color: 'red', fontSize: 12 }}>{errors.confirmPassword}</Text>
+                  )}
+                </View>
 
-          <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-            <Text style={styles.registerButtonText}>Crear Cuenta</Text>
-          </TouchableOpacity>
+                <TouchableOpacity onPress={handleSubmit}>
+                  <LinearGradient
+                    colors={['#007bff', '#0056b3']}
+                    style={styles.registerButton}
+                  >
+                    <Text style={styles.registerButtonText}>Crear Cuenta</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </>
+            )}
+          </Formik>
 
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>¿Ya tienes cuenta? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.loginLink}>Inicia sesión aquí</Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <LinearGradient
+                  colors={['#007bff', '#0056b3']}
+                  style={styles.loginLinkContainer}
+                >
+                  <Text style={styles.loginLink}>Inicia sesión aquí</Text>
+                </LinearGradient>
+              </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -182,6 +200,10 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  inputError: {
+    borderColor: 'red',
+    borderWidth: 2,
+  },
   registerButton: {
     backgroundColor: '#28a745',
     paddingVertical: 15,
@@ -211,8 +233,13 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 16,
   },
+  loginLinkContainer: {
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
   loginLink: {
-    color: '#007AFF',
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },

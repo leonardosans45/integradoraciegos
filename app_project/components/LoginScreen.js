@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import {
   View,
   Text,
@@ -9,27 +11,13 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Por favor, completa todos los campos');
-      return;
-    }
-    
-    if (!email.includes('@')) {
-      Alert.alert('Error', 'Por favor, introduce un email válido');
-      return;
-    }
-
-    // Aquí puedes agregar la lógica de autenticación real
-    Alert.alert('Éxito', 'Bienvenido de vuelta!', [
-      { text: 'OK', onPress: () => navigation.navigate('Home') }
-    ]);
-  };
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string().email('Please enter a valid email').required('Please fill out all fields'),
+    password: Yup.string().required('Please fill out all fields'),
+  });
 
   return (
     <KeyboardAvoidingView 
@@ -37,40 +25,79 @@ export default function LoginScreen({ navigation }) {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.innerContainer}>
-        <Text style={styles.title}>Iniciar Sesión</Text>
-        <Text style={styles.subtitle}>¡Bienvenido de vuelta!</Text>
+        <Text style={styles.title}>Welcome back</Text>
+        <Text style={styles.subtitle}>Login to access your smart cane features.</Text>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            placeholderTextColor="#999"
-          />
-        </View>
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          validationSchema={LoginSchema}
+          onSubmit={(values) => {
+            // Aquí puedes agregar la lógica de autenticación real
+            Alert.alert('Éxito', 'Bienvenido de vuelta!', [
+              { text: 'OK', onPress: () => navigation.navigate('Home') }
+            ]);
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            <>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.email && errors.email ? styles.inputError : null,
+                  ]}
+                  placeholder="Email"
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  placeholderTextColor="#999"
+                />
+                {touched.email && errors.email && (
+                  <Text style={{ color: 'red', fontSize: 12 }}>{errors.email}</Text>
+                )}
+              </View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Contraseña"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            placeholderTextColor="#999"
-          />
-        </View>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.password && errors.password ? styles.inputError : null,
+                  ]}
+                  placeholder="Password"
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  secureTextEntry
+                  placeholderTextColor="#999"
+                />
+                {touched.password && errors.password && (
+                  <Text style={{ color: 'red', fontSize: 12 }}>{errors.password}</Text>
+                )}
+              </View>
 
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
-        </TouchableOpacity>
+              <TouchableOpacity onPress={handleSubmit}>
+                <LinearGradient
+                  colors={['#007bff', '#0056b3']}
+                  style={styles.loginButton}
+                >
+                  <Text style={styles.loginButtonText}>Login</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </>
+          )}
+        </Formik>
 
         <View style={styles.registerContainer}>
-          <Text style={styles.registerText}>¿No tienes cuenta? </Text>
+          <Text style={styles.registerText}>¿Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.registerLink}>Regístrate aquí</Text>
+            <LinearGradient
+              colors={['#007bff', '#0056b3']}
+              style={styles.registerLinkContainer}
+            >
+              <Text style={styles.registerLink}>sing up here</Text>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>
@@ -121,6 +148,10 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  inputError: {
+    borderColor: 'red',
+    borderWidth: 2,
+  },
   loginButton: {
     backgroundColor: '#007AFF',
     paddingVertical: 15,
@@ -150,8 +181,13 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 16,
   },
+  registerLinkContainer: {
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
   registerLink: {
-    color: '#007AFF',
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },

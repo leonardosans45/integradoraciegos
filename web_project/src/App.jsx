@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Login from './Login'
 import SignUp from './SignUp'
 import ForgotPassword from './ForgotPassword'
+import SimpleMap from './SimpleMap'
 import PurchasePage from './PurchasePage'
 import About from './About'
 import Features from './Features'
@@ -37,6 +38,14 @@ function App() {
     setCurrentView('forgotpassword')
   }
 
+  const handleLoginSuccess = () => {
+    setCurrentView('map')
+  }
+
+  const handleGoToMap = () => {
+    setCurrentView('map')
+  }
+
   const handleBuyCaneClick = () => {
     setCurrentView('purchase')
   }
@@ -56,7 +65,7 @@ function App() {
   return (
     <>
      {currentView === 'home' && (
-       <>
+       <div className="with-header">
          <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
          <section className='Main-section'>
           <img src={backgroundImage} className="Background-image" alt="background" />
@@ -72,59 +81,65 @@ function App() {
             <p>our smart cane is designed to enhance the mobility and independence of visually impaired individuals. with advanced sensors and intuitive design, it provides real-time feedback and navigation assistance, making every journey safer and more confident.</p>
           </div>
          </section>
-       </>
+       </div>
      )}
      
      {currentView === 'login' && (
-       <div>
-         <Login onGoToSignUp={handleGoToSignUp} onGoToForgotPassword={handleGoToForgotPassword} />
+       <div className="full-page">
+         <Login onGoToSignUp={handleGoToSignUp} onGoToForgotPassword={handleGoToForgotPassword} onLoginSuccess={handleLoginSuccess} />
          <button onClick={handleBackToHome} className="back-to-home-btn">
-           Back to Home
+           ← Back to Home
          </button>
        </div>
      )}
 
+     {currentView === 'map' && (
+       <div className="full-page">
+         <SimpleMap onGoHome={handleBackToHome} />
+       </div>
+     )}
+
      {currentView === 'forgotpassword' && (
-       <div>
+       <div className="full-page">
          <ForgotPassword onGoToLogin={handleGoToLogin} />
          <button onClick={handleBackToHome} className="back-to-home-btn">
-           Back to Home
+           ← Back to Home
          </button>
        </div>
      )}
      
      {currentView === 'signup' && (
-       <div>
+       <div className="full-page">
          <SignUp onGoToLogin={handleGoToLogin} />
          <button onClick={handleBackToHome} className="back-to-home-btn">
-           Back to Home
+           ← Back to Home
          </button>
        </div>
      )}
      
      {currentView === 'purchase' && (
-       <div>
+       <div className="with-header">
          <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
          <PurchasePage onBackToHome={handleBackToHome} />
        </div>
      )}
      
      {currentView === 'about' && (
-       <div>
+       <div className="with-header">
          <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
          <About onBackToHome={handleBackToHome} />
        </div>
      )}
      
      {currentView === 'features' && (
-       <div>
+       <div className="with-header">
          <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
          <Features onBackToHome={handleBackToHome} />
        </div>
      )}
      
      {currentView === 'contactus' && (
-       <div>
+       <div className="with-header">
          <Header onLoginClick={handleLoginClick} onSignUpClick={handleSignUpClick} onBuyCaneClick={handleBuyCaneClick} onAboutClick={handleAboutClick} onFeaturesClick={handleFeaturesClick} onContactUsClick={handleContactUsClick} />
          <ContactUs />
        </div>
